@@ -1,5 +1,6 @@
 import {
   Controller,
+  Inject,
   Logger,
   Post,
   UploadedFile,
@@ -11,13 +12,17 @@ import {
 } from '@nestjs/platform-express';
 import { MulterOption } from '../multer/multer_option';
 import * as XLSX from 'xlsx';
+import { CreateRawLedgerCommandService } from './create-raw-ledger.command.service';
 
 @Controller('upload')
-export class FileUploadHttpController {
-  private readonly logger = new Logger(FileUploadHttpController.name);
+export class RawLedgerCommandHttpController {
+  private readonly logger = new Logger(RawLedgerCommandHttpController.name);
 
-  constructor() {
-    this.logger.log('FileUploadHttpController created');
+  constructor(
+    @Inject('CREATE_RAW_LEDGER_COMMAND_SERVICE')
+    private readonly createRawLedgerCommandService: CreateRawLedgerCommandService,
+  ) {
+    this.logger.log('createRawLedgerHttpController created');
   }
 
   @UseInterceptors(FileInterceptor('file'))
@@ -37,6 +42,15 @@ export class FileUploadHttpController {
     // database 에 raw data 를 저장합니다.
     // userId, companyId, mappingInfo, rawData, createdAt, updatedAt
     console.log(1, jsonData);
+
+    const props = {
+      userId: 'userId',
+      companyId: 'companyId',
+      rawData: jsonData,
+    };
+
+    await this.createRawLedgerCommandService.createRawLedger(props);
+    this.logger.debug('raw ledger created ', props);
     return 'File uploaded';
   }
 }

@@ -1,3 +1,3 @@
-import { FileUploadHttpController } from './commands/file-upload.http.controller';
+import { RawLedgerCommandHttpController } from './commands/raw-ledger.command.http.controller';
 
-export const financeControllers = [FileUploadHttpController];
+export const financeControllers = [RawLedgerCommandHttpController];

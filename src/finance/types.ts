@@ -27,5 +27,4 @@ export interface IMappingInfo {
   specialIncome: string[];
   specialCost: string[];
   incomeTax: string[];
-  netIncome: string[];
 }

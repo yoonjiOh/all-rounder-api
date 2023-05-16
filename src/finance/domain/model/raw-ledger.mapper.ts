@@ -39,6 +39,8 @@ export class RawLedgerMapper {
       id: copy.id,
       userId: copy.userId,
       companyId: copy.companyId,
+      mappingInfo: copy.mappingInfo,
+      rawData: copy.rawData,
     };
 
     return response;

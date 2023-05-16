@@ -14,4 +14,8 @@ export class RawLedgerRepository implements RawLedgerRepositoryPort {
   async insertRawLedgerData(record: RawLedger): Promise<void> {
     await this.rawLedgerRepository.save(record);
   }
+
+  async getRawLedger(id: string): Promise<RawLedger> {
+    return this.rawLedgerRepository.findOneBy({ id });
+  }
 }

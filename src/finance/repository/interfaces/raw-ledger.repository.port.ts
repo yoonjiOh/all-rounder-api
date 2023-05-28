@@ -1,6 +1,6 @@
-import { RawLedger } from 'src/finance/entities/raw-ledger.entity';
+import { RawLedger } from 'src/finance/db/entities/raw-ledger.entity';
 
 export interface RawLedgerRepositoryPort {
-  insertRawLedgerData(record: RawLedger): Promise<void>;
+  save(record: RawLedger): Promise<void>;
   getRawLedger(id: string): Promise<RawLedger>;
 }

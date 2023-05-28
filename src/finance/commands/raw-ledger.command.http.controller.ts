@@ -1,28 +1,28 @@
 import {
+  Body,
   Controller,
   Inject,
   Logger,
+  Param,
+  Patch,
   Post,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import {
-  FileFieldsInterceptor,
-  FileInterceptor,
-} from '@nestjs/platform-express';
-import { MulterOption } from '../multer/multer_option';
+import { FileInterceptor } from '@nestjs/platform-express';
 import * as XLSX from 'xlsx';
-import { CreateRawLedgerCommandService } from './create-raw-ledger.command.service';
+import { UpdateRawLedgerDto } from '../dto/request/update-raw-ledger.request.dto';
+import { RawLedgerCommandService } from './raw-ledger.command.service';
 
-@Controller('upload')
+@Controller('raw-ledger')
 export class RawLedgerCommandHttpController {
   private readonly logger = new Logger(RawLedgerCommandHttpController.name);
 
   constructor(
-    @Inject('CREATE_RAW_LEDGER_COMMAND_SERVICE')
-    private readonly createRawLedgerCommandService: CreateRawLedgerCommandService,
+    @Inject('RAW_LEDGER_COMMAND_SERVICE')
+    private readonly rawLedgerCommandService: RawLedgerCommandService,
   ) {
-    this.logger.log('createRawLedgerHttpController created');
+    this.logger.log('RawLedgerHttpController created');
   }
 
   @UseInterceptors(FileInterceptor('file'))
@@ -49,8 +49,16 @@ export class RawLedgerCommandHttpController {
       rawData: jsonData,
     };
 
-    await this.createRawLedgerCommandService.createRawLedger(props);
+    await this.rawLedgerCommandService.createRawLedger(props);
     this.logger.debug('raw ledger created ', props);
     return 'File uploaded';
+  }
+
+  @Patch('/:id')
+  async patchRawLedger(
+    @Param('id') id: string,
+    @Body() updateRawLedgerDto: UpdateRawLedgerDto,
+  ) {
+    await this.rawLedgerCommandService.updateRawLedger(id, updateRawLedgerDto);
   }
 }

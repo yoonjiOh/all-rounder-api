@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { RawLedgerResponseDto } from 'src/finance/dto/response/RawLedger.response.dto';
-import { RawLedger } from 'src/finance/entities/raw-ledger.entity';
+import { RawLedger } from 'src/finance/db/entities/raw-ledger.entity';
 import { RawLedgerEntity } from './raw-ledger.entity';
 
 @Injectable()
@@ -14,6 +14,7 @@ export class RawLedgerMapper {
         userId: record.userId,
         companyId: record.companyId,
         mappingInfo: record.mappingInfo,
+        oldMappaingInfo: record.oldMappingInfo,
         rawData: record.rawData,
       },
     });
@@ -28,6 +29,7 @@ export class RawLedgerMapper {
     record.userId = copy.userId;
     record.companyId = copy.companyId;
     record.mappingInfo = copy.mappingInfo;
+    record.oldMappingInfo = copy.oldMappaingInfo;
     record.rawData = copy.rawData;
 
     return record;

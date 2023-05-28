@@ -8,7 +8,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { monotonicFactory, ULID } from 'ulid';
-import { IMappingInfo } from '../types';
 
 @Entity('rawLedger')
 export class RawLedger {
@@ -47,6 +46,15 @@ export class RawLedger {
     comment: 'user가 제출한 장부 field 명과 손익계산서 항목을 mapping 한 data',
   })
   mappingInfo: Record<string, any>;
+
+  @Column({
+    name: 'oldMappingInfo',
+    type: 'jsonb',
+    nullable: true,
+    comment:
+      'user가 제출한 장부 field 명과 손익계산서 항목을 mapping 한 old data',
+  })
+  oldMappingInfo: Record<string, any>;
 
   @Column({
     name: 'rawData',

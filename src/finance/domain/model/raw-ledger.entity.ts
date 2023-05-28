@@ -1,7 +1,7 @@
 import { AggregateID, Entity } from 'src/ddd/libs/entity.base';
 import { IMappingInfo } from 'src/finance/types';
 import { ulid } from 'ulid';
-import { CreateRawLedgerProps, RawLedgerProps } from './raw-ladger.types';
+import { CreateRawLedgerProps, RawLedgerProps } from './raw-ledger.types';
 
 export class RawLedgerEntity extends Entity<RawLedgerProps> {
   protected readonly _id: AggregateID;
@@ -12,6 +12,7 @@ export class RawLedgerEntity extends Entity<RawLedgerProps> {
     const props: RawLedgerProps = {
       ...create,
       mappingInfo: this.createMappingInfo(create.rawData),
+      oldMappaingInfo: {},
     };
 
     const RawLedgerInstance = new RawLedgerEntity({ id, props });
@@ -80,6 +81,18 @@ export class RawLedgerEntity extends Entity<RawLedgerProps> {
         incomeTax.some((word) => key.includes(word)),
       ),
     };
+  }
+
+  updateMappingInfo(newMappingInfo: Record<string, any>): void {
+    /*
+      전달받은 mappingInfo 를 기반으로 rawData 의 mappingInfo 를 갈아 치운다. 
+      validate 로직을 나중에 고도화 해야 할 것 같다.
+      클라이언트에서 잘못해서 통채로 잘못된 데이터를 보내올 수 있기 때문에
+      기존 mapping info 와 비교하거나, 한 번 정도는 기록을 해서 history 관리가 필요하다.
+    */
+
+    this.props.oldMappaingInfo = { ...this.props.mappingInfo };
+    this.props.mappingInfo = newMappingInfo;
   }
 
   public validate(): void {

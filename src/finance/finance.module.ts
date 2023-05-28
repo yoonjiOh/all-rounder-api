@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { RawLedger } from './entities/raw-ledger.entity';
+import { RawLedger } from './db/entities/raw-ledger.entity';
 import { financeControllers } from './finance.controller';
 import { FinanceProviders } from './finance.provider';
 

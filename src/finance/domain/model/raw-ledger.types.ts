@@ -6,4 +6,5 @@ export interface CreateRawLedgerProps {
 
 export interface RawLedgerProps extends CreateRawLedgerProps {
   mappingInfo: Record<string, any>;
+  oldMappaingInfo: Record<string, any>; // history 용으로 필요
 }

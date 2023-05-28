@@ -1,10 +1,10 @@
 import { Controller, Get, Inject, Param } from '@nestjs/common';
 import { RawLedgerQueryService } from './raw-ledger.query.service';
 
-@Controller()
+@Controller('raw-ledger')
 export class RawLedgerQueryHttpController {
   constructor(
-    @Inject('QUERY_RAW_LEDGER_COMMAND_SERVICE')
+    @Inject('RAW_LEDGER_QUERY_SERVICE')
     private readonly rawLedgerQueryService: RawLedgerQueryService,
   ) {}
 

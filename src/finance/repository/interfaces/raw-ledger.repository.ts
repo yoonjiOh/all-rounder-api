@@ -18,4 +18,8 @@ export class RawLedgerRepository implements RawLedgerRepositoryPort {
   async getRawLedger(id: string): Promise<RawLedger> {
     return this.rawLedgerRepository.findOneBy({ id });
   }
+
+  async delete(id: string): Promise<void> {
+    await this.rawLedgerRepository.softDelete({ id });
+  }
 }

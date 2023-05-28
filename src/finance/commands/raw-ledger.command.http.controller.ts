@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Inject,
   Logger,
   Param,
@@ -60,5 +61,10 @@ export class RawLedgerCommandHttpController {
     @Body() updateRawLedgerDto: UpdateRawLedgerDto,
   ) {
     await this.rawLedgerCommandService.updateRawLedger(id, updateRawLedgerDto);
+  }
+
+  @Delete('/:id')
+  async deleteRawLedger(@Param('id') id: string) {
+    await this.rawLedgerCommandService.deleteRawLedger(id);
   }
 }

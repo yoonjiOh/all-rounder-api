@@ -47,4 +47,17 @@ export class RawLedgerCommandService {
 
     await this.rawLedgerRepository.save(updatedRawLedgerRecord);
   }
+
+  async deleteRawLedger(id: string): Promise<void> {
+    this.logger.log('RawLedgerCommandService.deleteRawLedger()', id);
+
+    const rawLedgerRecord: RawLedger =
+      await this.rawLedgerRepository.getRawLedger(id);
+
+    if (!rawLedgerRecord) {
+      throw new BadRequestException('RawLedger not found');
+    }
+
+    await this.rawLedgerRepository.delete(id);
+  }
 }

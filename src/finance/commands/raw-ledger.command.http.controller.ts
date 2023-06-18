@@ -13,6 +13,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as XLSX from 'xlsx';
 import { UpdateRawLedgerDto } from '../dto/request/update-raw-ledger.request.dto';
+import { RawLedgerResponseDto } from '../dto/response/RawLedger.response.dto';
 import { RawLedgerCommandService } from './raw-ledger.command.service';
 
 @Controller('raw-ledger')
@@ -28,7 +29,9 @@ export class RawLedgerCommandHttpController {
 
   @UseInterceptors(FileInterceptor('file'))
   @Post()
-  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+  uploadFile(
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<RawLedgerResponseDto> {
     console.log(0, file);
     const workbook = XLSX.read(file.buffer, { type: 'buffer' });
     // 첫번째 sheet 의 이름을 조회합니다.
@@ -42,17 +45,13 @@ export class RawLedgerCommandHttpController {
 
     // database 에 raw data 를 저장합니다.
     // userId, companyId, mappingInfo, rawData, createdAt, updatedAt
-    console.log(1, jsonData);
-
     const props = {
       userId: 'userId',
       companyId: 'companyId',
       rawData: jsonData,
     };
 
-    await this.rawLedgerCommandService.createRawLedger(props);
-    this.logger.debug('raw ledger created ', props);
-    return 'File uploaded';
+    return this.rawLedgerCommandService.createRawLedger(props);
   }
 
   @Patch('/:id')

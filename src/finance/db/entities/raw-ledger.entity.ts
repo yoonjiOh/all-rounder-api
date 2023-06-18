@@ -1,5 +1,4 @@
 import {
-  BeforeInsert,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -7,16 +6,9 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { monotonicFactory, ULID } from 'ulid';
 
 @Entity('rawLedger')
 export class RawLedger {
-  private ulid: ULID;
-
-  constructor() {
-    this.ulid = monotonicFactory();
-  }
-
   @PrimaryColumn({
     name: 'id',
     comment:
@@ -83,9 +75,4 @@ export class RawLedger {
     comment: 'raw ledger deleted date',
   })
   deletedAt: Date;
-
-  @BeforeInsert()
-  generateUlid() {
-    this.id = this.ulid();
-  }
 }

@@ -19,12 +19,20 @@ export class RawLedgerCommandService {
     this.logger.log('RawLedgerCommandService created');
   }
 
-  async createRawLedger(props: CreateRawLedgerProps): Promise<void> {
+  async createRawLedger(
+    props: CreateRawLedgerProps,
+  ): Promise<RawLedgerResponseDto> {
     this.logger.log('RawLedgerCommandService.createRawLedger()', props);
 
     const entity = RawLedgerEntity.create(props);
     const record = this.rawLedgerMapper.toPersistence(entity);
-    await this.rawLedgerRepository.save(record);
+    try {
+      await this.rawLedgerRepository.save(record);
+    } catch (err) {
+      throw new BadRequestException('CREATE RAW LEGDER ERROR', err.message);
+    }
+
+    return this.rawLedgerMapper.toResponse(entity);
   }
 
   async updateRawLedger(id: string, props: UpdateRawLedgerDto): Promise<void> {
